@@ -6,9 +6,9 @@ Enables running the module as:
 
 as well as the standard
 
-  $ check_system --help
+  $ check-system --help
 """
 
-from check_system import app
+from check_system import cli_wrapper
 
-app()
+cli_wrapper()

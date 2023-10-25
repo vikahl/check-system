@@ -3,10 +3,10 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "check_system"
+name = "check-system"
 description = "Tool for checking that a system is ok"
 authors = [
-    { name = "Viktor Rimark",email = "gi@rxbc.se" }
+    { name = "Viktor Rimark", email = "python@rxbc.se" }
 ]
 
 urls = { homepage = "https://blog.rxbc.se" }
@@ -15,6 +15,8 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -24,48 +26,32 @@ classifiers = [
 ]
 
 dynamic = ["version", "readme"]
-requires-python = ">=3.8"
-
-# Specify the packages required by the project. For libraries, the constraints
-# should be loosely defined as too narrow constraints will make it hard to
-# install the package together with other libraries and will prevent users from
-# getting security updates.
-
-
-dependencies = [
-  "typer"
-]
-
+requires-python = ">=3.6"
 
 [project.optional-dependencies]
-# pip-compile doesn't work well with extras referencing the package itself when
-# hashes are required, as the package itself will be added to the list.
-# Therefore the dependency groups "dev" is just for developer convenience and
-# should not list dependencies itself. The compilation in tox lists all extras
-# explicitly (i.e., --extra format,lint,types,test
 dev = [ # All dev dependencies
-    "check_system[format]",
-    "check_system[lint]",
-    "check_system[test]",
+  "check_system[format]",
+  "check_system[lint]",
+  "check_system[test]",
 ]
 format = [
   "black",
   "isort"
 ]
 lint = [
-    "black",
-    "isort",
-    "pylint"
+  "black",
+  "isort",
+  "pylint"
 ]
 types = [
-    "mypy"
+  "mypy"
 ]
 test = [
-    "pytest",
-    "pytest-cov"
+  "pytest",
+  "pytest-cov"
 ]
 [project.scripts]
-check_system = "check_system:app"
+check-system = "check_system:cli_wrapper"
 
 [tool.setuptools.dynamic]
 version = {attr = "check_system.__version__"}
