@@ -1,28 +1,42 @@
-"""Example cli file defining two methods.
+"""Main cli code."""
 
-For more information about typer, read the excellent documentation at
-https://typer.tiangolo.com/
-"""
-from typing import List
+import argparse
+import sys
+from typing import Dict, List, Optional
 
-import typer
-
-import check_system.lib
-
-app = typer.Typer()
+import check_system
 
 
-@app.command()
-def add(number: List[float] = typer.Option([])) -> None:
-    """Add numbers and print the sum."""
+def parse_args(argv: Optional[List[str]] = None) -> Dict[str, str]:
+    """Utility function for creating parser and parsing arguments."""
+    parser = argparse.ArgumentParser()
 
-    typer.echo("Adding numbers")
-    result = check_system.lib.add(*number)
-    typer.echo(f"Result: {result}")
+    for marker, marker_data in check_system.MARKERS.items():
+        parser.add_argument(
+            f"--{marker.replace('_', '-')}",
+            type=str,
+            default=None,
+            help=marker_data["help"],
+        )
+
+    args = parser.parse_args(argv)
+
+    return vars(args)
 
 
-@app.command()
-def hello(who: str) -> None:
-    """Say hello to someone."""
+def main(argv: Optional[List[str]] = None) -> None:
+    """Main function of the cli"""
+    args = parse_args(argv)
 
-    typer.echo(f"Hello {who}")
+    for marker, value in args.items():
+        if value:
+            if check_system.MARKERS[marker]["value"] != value:
+                raise SystemExit(
+                    f"Check failed: {marker} was "
+                    f"{check_system.MARKERS[marker]['value']}. Checked against: {value}"
+                )
+
+
+def cli_wrapper() -> None:
+    """Wrapper function aroun main that reads arguments with sys.argv."""
+    main(sys.argv[1:])
