@@ -2,7 +2,6 @@
 
 __version__ = "0.0.1b1"
 
-from check_system.cli import cli_wrapper, main
-from check_system.markers import MARKERS
+from check_system.check_system import MARKERS, cli_wrapper
 
-__all__ = ["main", "cli_wrapper", "MARKERS"]
+__all__ = ["cli_wrapper", "MARKERS"]
